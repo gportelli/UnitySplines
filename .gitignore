@@ -1,0 +1,37 @@
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+SplinesTest/Library/
+build/
+UnityVS/
+UnityVS.*
+Splines-documentation/
+SplinesLibrary/bin/
+SplinesLibrary/batch/initPath.bat
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+SplinesTest/*.csproj
+*.pidb
+*.suo
+SplinesTest/*.sln
+*.user
+*.unityproj
+*.booproj
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

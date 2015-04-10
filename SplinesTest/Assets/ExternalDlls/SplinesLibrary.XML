@@ -1,0 +1,610 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SplinesLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:AClockworkBerry.Splines.Bezier">
+            <summary>
+            A set of static functions for bezier cubic curves.
+            This class provides static methods to calculate cubic bezier curves positions, first derivative and second derivative.
+            A method for numerical integration (whith trapezoidal rule) of the curve. 
+            And a method for arc length reparameterization based on the inversion of curve integration with root-finding algorithms (bisection and newton).
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Bezier.integrationSteps">
+            <summary>
+            The number of integration steps.
+            </summary>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Bezier.GetPoint(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
+            <summary>
+            Gets the curve point at t position.
+            </summary>
+            <param name="p0">First control point.</param>
+            <param name="p1">Second control point.</param>
+            <param name="p2">Third control point.</param>
+            <param name="p3">Forth control point.</param>
+            <param name="t">The t parameter in [0, 1].</param>
+            <returns>The point vector</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Bezier.GetFirstDerivative(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
+            <summary>
+            Gets the first derivative of the curve at t position.
+            </summary>
+            <param name="p0">First control point.</param>
+            <param name="p1">Second control point.</param>
+            <param name="p2">Third control point.</param>
+            <param name="p3">Forth control point.</param>
+            <param name="t">The t parameter in [0, 1].</param>
+            <returns>The velocity vector.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Bezier.GetSecondDerivative(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
+            <summary>
+            Gets the second derivative of the curve at t position.
+            </summary>
+            <param name="p0">First control point.</param>
+            <param name="p1">Second control point.</param>
+            <param name="p2">Third control point.</param>
+            <param name="p3">Forth control point.</param>
+            <param name="t">The t parameter in [0, 1].</param>
+            <returns>The acceleration vector.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Bezier.IntegrateTrapezoid(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>
+            Integrates numerically with trapezoid rule the curve first derivative in [t0, t1] obtaining an arc length.
+            </summary>
+            <param name="p0">First control point.</param>
+            <param name="p1">Second control point.</param>
+            <param name="p2">Third control point.</param>
+            <param name="p3">Forth control point.</param>
+            <param name="t0">The t0 left parameter in [0, 1].</param>
+            <param name="t1">The t1 right parameter in [0, 1].</param>
+            <returns>The arc length of the curve in [t0, t1].</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Bezier.IntegrateSimpson(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>
+            Integrates numerically with Simpson's rule the curve first derivative in [t0, t1] obtaining an arc length.
+            </summary>
+            <param name="p0">First control point.</param>
+            <param name="p1">Second control point.</param>
+            <param name="p2">Third control point.</param>
+            <param name="p3">Forth control point.</param>
+            <param name="t0">The t0 left parameter in [0, 1].</param>
+            <param name="t1">The t1 right parameter in [0, 1].</param>
+            <returns>The arc length of the curve in [t0, t1].</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Bezier.IntegrateSimpson38(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>
+            Integrates numerically with Simpson's 3/8 rule the curve first derivative in [t0, t1] obtaining an arc length.
+            </summary>
+            <param name="p0">First control point.</param>
+            <param name="p1">Second control point.</param>
+            <param name="p2">Third control point.</param>
+            <param name="p3">Forth control point.</param>
+            <param name="t0">The t0 left parameter in [0, 1].</param>
+            <param name="t1">The t1 right parameter in [0, 1].</param>
+            <returns>The arc length of the curve in [t0, t1].</returns>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Bezier.Wvalues">
+            <summary>
+            Legendre-Gauss weights with n=12 (w_i values, defined by a function linked to in the Bezier primer article)
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Bezier.Tvalues">
+            <summary>
+            Legendre-Gauss abscissae with n=12 (x_i values, defined at i=n as the roots of the nth order Legendre polynomial Pn(x))
+            </summary>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Bezier.Integrate(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>
+            Integrates numerically with Legendre Gauss Quadrature rule the curve first derivative in [t0, t1] obtaining an arc length.
+            </summary>
+            <param name="p0">First control point.</param>
+            <param name="p1">Second control point.</param>
+            <param name="p2">Third control point.</param>
+            <param name="p3">Forth control point.</param>
+            <param name="t0">The t0 left parameter in [0, 1].</param>
+            <param name="t1">The t1 right parameter in [0, 1].</param>
+            <returns>The arc length of the curve in [t0, t1].</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Bezier.GetArcLengthParameter(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Single,System.Single,System.Int32)">
+            <summary>
+            Gets the curve parameter that gives an arc length of s.
+            </summary>
+            <param name="p0">First control point.</param>
+            <param name="p1">Second control point.</param>
+            <param name="p2">Third control point.</param>
+            <param name="p3">Forth control point.</param>
+            <param name="s">The disired arc length s in [0, curve length].</param>
+            <param name="t0">The t parameter initial candidate for the algorithm.</param>
+            <param name="epsilon">The maximum error ds.</param>
+            <param name="jmax">The maximum number of iterations for the root-finding algorithm.</param>
+            <returns>The curve parameter.</returns>
+        </member>
+        <member name="T:AClockworkBerry.Splines.BezierControlPointMode">
+            <summary>
+            The type of control point.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.BezierControlPointMode.Corner">
+            <summary>
+            The handles sizes and positions are free.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.BezierControlPointMode.Aligned">
+            <summary>
+            The handles directions are linked, the handles sizes are free.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.BezierControlPointMode.Smooth">
+            <summary>
+            The handles directions and sizes are linked.
+            </summary>
+        </member>
+        <member name="T:AClockworkBerry.Splines.Spline">
+            <summary>
+            This class contains functions to create and edit bezier splines. 
+            It also contains methods to walk the spline (or spline sections) at constant speed based on curve first derivative.
+            Arc length reparameterization can be performed with a high cost accurate function or with a low cost real-time oriented approximate function.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline._modes">
+            <summary>
+            The mode for each control point (corner, aligned, smooth).
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline._curveLengths">
+            <summary>
+            The curve lengths cache.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline._arcLengths">
+            <summary>
+            The arc lengths cache, each value represents the length of the arc from spline start to the curve end.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline.showGizmo">
+            <summary>
+            Show gizmo in viewport
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline.showVelocities">
+            <summary>
+            Show velocities in viewport.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline.showAccelerations">
+            <summary>
+            Show accelerations in viewport.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline.showNumbers">
+            <summary>
+            Show control point numbers in viewport.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline.color">
+            <summary>
+            The spline color showed in the viewport.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline._loop">
+            <summary>
+            Is this a looping spline
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline._samplesDistance">
+            <summary>
+            The distance between each sample to be used in the approximate arc length reparameterization algorithm.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline._tSample">
+            <summary>
+            The cache of curve parameters to be used in the approximate arc length reparameterization algorithm.
+            For each curve _nSamples are saved.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.Spline._tsSlope">
+            <summary>
+            The cache of _tSample to _sSample slopes to be used in the approximate arc length reparameterization algorithm.
+            For each curve _nSamples are saved.
+            </summary>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.DoGizmos(System.Boolean)">
+            <summary>
+            This function renders the spline in the viewport when it is not selected. 
+            </summary>
+            <remarks>
+            It draws the spline with a set of selectable segments. 
+            A gizmo is included as well to help the user in the selection.
+            It is compiled only inside the unity editor. It is not included in the exported builds.
+            </remarks>
+            <param name="selected">True if the spline is selected.</param>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.Create">
+            <summary>
+            Creates an empty spline
+            </summary>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline._CurveLength(System.Int32)">
+            <summary>
+            Gets the total length of the curve.
+            </summary>
+            <param name="curveIndex">The curve index.</param>
+            <returns>The length of the curve.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline._UpdateLengths">
+            <summary>
+            Generates the curve lengths and arc lengths cache.
+            </summary>
+            <remarks>
+            For each bezier curve of the spline its length is stored in _curveLengths and the arc length
+            from the spline start to the curve end is stored in _arcLenghts.
+            </remarks>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetControlPoint(System.Int32)">
+            <summary>
+            Gets the control point.
+            </summary>
+            <param name="pointIndex">The control point index.</param>
+            <returns>The control point vector</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.SetControlPoint(System.Int32,UnityEngine.Vector3)">
+            <summary>
+            Sets the value for the control point at index position.
+            </summary>
+            <param name="index">The index of the control point.</param>
+            <param name="point">The control point value.</param>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetControlPointMode(System.Int32)">
+            <summary>
+            Gets the control point mode.
+            </summary>
+            <param name="pointIndex">The control point index.</param>
+            <returns>The control point mode.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.SetControlPointMode(System.Int32,AClockworkBerry.Splines.BezierControlPointMode)">
+            <summary>
+            Sets the control point mode at index position.
+            </summary>
+            <param name="index">The index of the control point.</param>
+            <param name="mode">The mode.</param>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline._EnforceMode(System.Int32)">
+            <summary>
+            Updates the handles (control points) of pointIndex according to current point mode.
+            </summary>
+            <param name="pointIndex">The point index.</param>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetPoint(System.Single)">
+            <summary>
+            Gets the curve vector at t parameter.
+            </summary>
+            <param name="t">The t parameter.</param>
+            <returns>Curve position vector</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetPoint(System.Int32,System.Int32,System.Single)">
+            <summary>
+            Gets the curve vector for the curve section from startIndex to endIndex at t parameter.
+            </summary>
+            <param name="startIndex">The start index of the curve section.</param>
+            <param name="endIndex">The end index of the curve section.</param>
+            <param name="t">The t parameter for the curve section, t in [0, 1].</param>
+            <returns>The curve vector position for the curve section at t.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetVelocity(System.Single)">
+            <summary>
+            Gets the velocity of the curve at parameter t.
+            </summary>
+            <param name="t">The t parameter.</param>
+            <returns>The velocity vector at t position.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetVelocity(System.Int32,System.Int32,System.Single)">
+            <summary>
+            Gets the velocity of the curve section from start index to end index at t parameter.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="endIndex">The end index.</param>
+            <param name="t">The t parameter for the curve section, t in [0, 1].</param>
+            <returns>The velocity vector.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetAcceleration(System.Single)">
+            <summary>
+            Gets the curve acceleration at t.
+            </summary>
+            <param name="t">The curve position parameter.</param>
+            <returns>The acceleration vector</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetAcceleration(System.Int32,System.Int32,System.Single)">
+            <summary>
+            Gets the acceleration.
+            </summary>
+            <param name="startIndex">The start knot index.</param>
+            <param name="endIndex">The end knot index.</param>
+            <param name="t">The curve position parameter.</param>
+            <returns>The acceleration vector.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetDirection(System.Single)">
+            <summary>
+            Gets the direction normalized vector of the curve at t position.
+            </summary>
+            <param name="t">The curve parameter t in [0, 1].</param>
+            <returns>Normalized direction vector.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetDirection(System.Int32,System.Int32,System.Single)">
+            <summary>
+            Gets the direction normalized vector of the curve section from startIndex to endIndex at t position.
+            </summary>
+            <param name="startIndex">The start index of the curve section.</param>
+            <param name="endIndex">The end index of the curve section.</param>
+            <param name="t">The t parameter for the curve section, t in [0, 1].</param>
+            <returns>Normalized direction vector.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.AddPoint(System.Int32)">
+            <summary>
+            Add a point to the spline. 
+            </summary>
+            <remarks>
+            Depending on the current selected point, the new point will be added between two points, or at the end of the curve.
+            If there's no point selected, or the selected point is the last point, the new point will be added at the end of the curve, at a distance of 1 in the direction of the last point of the spline.
+            If the selected point is not the last point, the new point will be created between previous and next point. The bezier handles of the new, of the previous and of the next point will be created/modified in order to maintain the same spline shape.
+            </remarks>
+            <param name="selectedIndex">The current selected control point index.</param>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.Reset">
+            <summary>
+            Resets this instance with an horizontal segment of length 3.
+            </summary>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline._RemoveAt``1(``0[],System.Int32)">
+            <summary>
+            Removes a value from an array and returns the new array.
+            </summary>
+            <typeparam name="T">The array type.</typeparam>
+            <param name="source">The source array.</param>
+            <param name="index">The index value to remove.</param>
+            <returns>The new array with the removed value.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline._RemoveRange``1(``0[],System.Int32,System.Int32)">
+            <summary>
+            Removes a range of values from an array and returns the new array.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source">The source array.</param>
+            <param name="start">The start index.</param>
+            <param name="end">The end index.</param>
+            <returns>The new array with the range of values removed.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.DeletePoint(System.Int32)">
+            <summary>
+            Deletes the point.
+            </summary>
+            <param name="pointIndex">Index of the point to delete.</param>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.SetDirty">
+            <summary>
+            Empties the caches of curve lenghts and curve samples for arc length reparameterization.
+            </summary>
+            <remarks>
+            The next time that a curve length will be requested, the arc length cache will be regenerated.
+            The next time that an approximate arc length reparameterizationi will be requested, the arc length samples will be regenerated.
+            This function is called automatically whenever a change is made to the spline (point added/deleted/moved, ...)
+            </remarks>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetProgressAtSpeed(System.Single,System.Single,System.Int32)">
+            <summary>
+            Update curve parameter progress in [0, 1] at constant speed using curve velocity (first derivative).
+            </summary>
+            <remarks>
+            This function is useful for walking on the curve at fixed speed without arc length reparameterization. It must be called for each frame.
+            </remarks>
+            <param name="currProgress">The current curve parameter.</param>
+            <param name="velocity">The velocity.</param>
+            <param name="direction">The speed direction.</param>
+            <returns>The new curve parameter</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.WalkDuration(System.Int32,System.Int32,System.Single,UnityEngine.Transform,AClockworkBerry.Splines.SplineWalkerMode,System.Boolean,AClockworkBerry.Splines.Spline.WalkCompleteFunction,AClockworkBerry.Splines.Spline.WalkUpdateFunction)">
+            <summary>
+            This is a coroutine for walking a spline section at constant speed in a defined time duration.
+            </summary>
+            <remarks>
+            Based on the specified duration and the length of the specified spline section it calculates the required speed and then calls WalkAtSpeed.
+            </remarks>
+            <param name="startIndex">The start index of the spline section. Use start index greater than end index to invert the direction of motion.</param>
+            <param name="endIndex">The end index of the spline section. Use end index lesser than start index to invert the direction of motion.</param>
+            <param name="duration">The desired duration to cover the spline section.</param>
+            <param name="transform">An optional transform object where to apply motion.</param>
+            <param name="mode">The SplineWalkerMode: once, loop or ping pong.</param>
+            <param name="lookForward">If set to <c>true</c> the transform rotation is set to curve direction.</param>
+            <param name="completeFunction">This function will be called upon motion completion (only form SplineWalkerMode.Once).</param>
+            <param name="updateFunction">This function will be called every frame.</param>
+            <seealso cref="M:AClockworkBerry.Splines.Spline.WalkAtSpeed(System.Int32,System.Int32,System.Single,UnityEngine.Transform,AClockworkBerry.Splines.SplineWalkerMode,System.Boolean,AClockworkBerry.Splines.Spline.WalkCompleteFunction,AClockworkBerry.Splines.Spline.WalkUpdateFunction)"/>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.WalkAtSpeed(System.Int32,System.Int32,System.Single,UnityEngine.Transform,AClockworkBerry.Splines.SplineWalkerMode,System.Boolean,AClockworkBerry.Splines.Spline.WalkCompleteFunction,AClockworkBerry.Splines.Spline.WalkUpdateFunction)">
+            <summary>
+            This is a coroutine for walking a spline section at constant speed. 
+            </summary>
+            <remarks>
+            It uses the function GetProgressAtSpeed in order to update the curve parameter at each frame mantaining a constant speed.
+            </remarks>
+            <param name="startIndex">The start index of the spline section. Use start index greater than end index to invert the direction of motion.</param>
+            <param name="endIndex">The end index of the spline section. Use end index lesser than start index to invert the direction of motion.</param>
+            <param name="velocity">The desired velocity.</param>
+            <param name="transform">An optional transform object where to apply motion.</param>
+            <param name="mode">The SplineWalkerMode: once, loop or ping pong.</param>
+            <param name="lookForward">If set to <c>true</c> the transform rotation is set to curve direction.</param>
+            <param name="completeFunction">This function will be called upon motion completion (only form SplineWalkerMode.Once).</param>
+            <param name="updateFunction">This function will be called every frame.</param>
+            <seealso cref="M:AClockworkBerry.Splines.Spline.WalkDuration(System.Int32,System.Int32,System.Single,UnityEngine.Transform,AClockworkBerry.Splines.SplineWalkerMode,System.Boolean,AClockworkBerry.Splines.Spline.WalkCompleteFunction,AClockworkBerry.Splines.Spline.WalkUpdateFunction)"/>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetPointAtIndex(System.Int32)">
+            <summary>
+            Gets the curve position at the index point.
+            </summary>
+            <param name="pointIndex">The index of the control point.</param>
+            <returns>The curve vector position.</returns>
+            <seealso cref="M:AClockworkBerry.Splines.Spline.GetPoint(System.Single)"/>
+            <seealso cref="M:AClockworkBerry.Splines.Spline.GetPoint(System.Int32,System.Int32,System.Single)"/>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline._GetCurveLength(System.Int32)">
+            <summary>
+            Gets the length of the get curve.
+            </summary>
+            <param name="curveIndex">The curve index.</param>
+            <returns>The curve length.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetArcLength(System.Single,System.Single)">
+            <summary>
+            Gets the arc length of the arc in the interval [t0, t1].         
+            </summary>
+            <remarks>
+            This function calculates an integration for the first and the last curve pieces of the arc. 
+            Then adds the precalculated arc lengths for the curves in the middle.
+            </remarks>
+            <param name="t0">The start parameter in [0, 1].</param>
+            <param name="t1">The end parameter in [0, 1].</param>
+            <returns>The arc length.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetArcLengthBetweenKnots(System.Int32,System.Int32)">
+            <summary>
+            Gets the arc length between two knots.         
+            </summary>
+            <param name="startKnot">The start knot.</param>
+            <param name="endKnot">The end knot.</param>
+            <returns>The arc length.</returns>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetArcLengthParameter(System.Single,System.Single)">
+            <summary>
+            Gets the curve parameter corresponding to the requested s arc length.
+            </summary>
+            <remarks>
+            This method performs an accurate arc length reparameterization of the curve. It is computational expensive. Use <see cref="M:AClockworkBerry.Splines.Spline.GetArcLengthParameterApproximate(System.Single)"/> for real-time.
+            It uses numerical integration and root-finding algorithms in order to find the parameter value that gives an arc length of s.
+            </remarks>
+            <param name="s">The desired spline arc length 0 &lt;= s &lt;= length.</param>
+            <param name="epsilon">The maximum error ds for the computed parameter.</param>
+            <returns>The curve parameter that gives an arc length equal to s.</returns>
+            <seealso cref="M:AClockworkBerry.Splines.Spline.GetArcLengthParameterApproximate(System.Single)"/>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline._InitSamples">
+            <summary>
+            Inits an array of samples (s, t, s-t slope) to be used in the approximate arc length 
+            reparameterization function: GetArcLengthParameterApproximate.
+            </summary>
+        </member>
+        <member name="M:AClockworkBerry.Splines.Spline.GetArcLengthParameterApproximate(System.Single)">
+            <summary>
+            Gets the curve parameter corresponding to the requested s arc length.
+            </summary>
+            <remarks>
+            This method performs an arc length reparameterization of the curve. It is an approximate computation, good for real time use. 
+            It is based on precomputed samples of s and t obtained with the accurate function GetArcLengthParameter. 
+            This function interpolates between samplad values to obtain an approximation of the arc length parameter.
+            </remarks>
+            <param name="s">The desired spline arc length 0 &lt;= s &lt;= length.</param>
+            <returns>The curve parameter that gives an arc length near to s.</returns>
+            /// <seealso cref="M:AClockworkBerry.Splines.Spline.GetArcLengthParameter(System.Single,System.Single)"/>
+        </member>
+        <member name="P:AClockworkBerry.Splines.Spline.length">
+            <summary>
+            Gets the total length of the spline.
+            </summary>
+            <value>
+            The spline length.
+            </value>
+        </member>
+        <member name="P:AClockworkBerry.Splines.Spline.samplesDistance">
+            <summary>
+            Gets or sets the distance between samples to be used in the approximate arc length reparameterization algorithm.
+            </summary>
+            <value>
+            The n samples.
+            </value>
+        </member>
+        <member name="P:AClockworkBerry.Splines.Spline.loop">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:AClockworkBerry.Splines.Spline"/> is loop.
+            If set to true, it welds the first and last point of the spline.
+            </summary>
+            <value>
+              <c>true</c> if loop; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:AClockworkBerry.Splines.Spline.curveCount">
+            <summary>
+            Gets the number of bezier curves in the spline.
+            </summary>
+            <value>
+            The curve count.
+            </value>
+        </member>
+        <member name="T:AClockworkBerry.Splines.Spline.WalkCompleteFunction">
+            <summary>
+            This Delegate is called when the spline walk is complete.
+            </summary>
+        </member>
+        <member name="T:AClockworkBerry.Splines.Spline.WalkUpdateFunction">
+            <summary>
+            This delegate is called on each frame during a spline walk.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="progress">The progress.</param>
+        </member>
+        <member name="T:AClockworkBerry.Splines.SplineWalker">
+            <summary>
+            Script for moving a game object along a spline.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalker.spline">
+            <summary>
+            The spline.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalker.duration">
+            <summary>
+            The walk duration.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalker.lookForward">
+            <summary>
+            Changes the object orientation to meet curve direction.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalker.mode">
+            <summary>
+            The walk mode (Once, Loop, Pin Pong).
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalker._progress">
+            <summary>
+            The walk progress (curve parameter in [0, 1]).
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalker._goingForward">
+            <summary>
+            Flag used for ping pong mode.
+            </summary>
+        </member>
+        <member name="T:AClockworkBerry.Splines.SplineWalkerMode">
+            <summary>
+            Defines modes for spline walk.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalkerMode.Once">
+            <summary>
+            Walk the path once from start to end.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalkerMode.Loop">
+            <summary>
+            Walk the path from start to end and then again from start to end in a loop.
+            </summary>
+        </member>
+        <member name="F:AClockworkBerry.Splines.SplineWalkerMode.PingPong">
+            <summary>
+            Cycle from start to end and then go back from end to start.
+            </summary>
+        </member>
+    </members>
+</doc>
