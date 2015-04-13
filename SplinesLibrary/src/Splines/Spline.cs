@@ -30,6 +30,8 @@ namespace AClockworkBerry.Splines
         /// </summary>
         private float[] _arcLengths;
 
+        private Vector3[] _orientationVectors;
+
         /// <summary>
         /// Gets the total length of the spline.
         /// </summary>
@@ -135,6 +137,14 @@ namespace AClockworkBerry.Splines
 
         void Start()
         {
+            _UpdateCache();
+        }
+
+        private void _UpdateCache()
+        {
+            _UpdateLengths();
+            _InitSamples();
+            _UpdateOrientations();
         }
 
         void OnDrawGizmos()
@@ -228,6 +238,39 @@ namespace AClockworkBerry.Splines
             }
 
             _arcLengths[curveCount] = arcLen;
+        }
+
+        private void _UpdateOrientations()
+        {
+            if (_orientationVectors != null) return;
+
+            // Compute initial orientation
+            Vector3 tangent = GetDirection(0);
+            Vector3 binormal, upVector;
+
+            if (Vector3.Dot(tangent, Vector3.up) < 0.9f)
+            {
+                binormal = Vector3.Cross(Vector3.up, tangent);
+                upVector = Vector3.Cross(tangent, binormal);
+            }
+            else if (Vector3.Dot(tangent, Vector3.right) < 0.9f)
+            {                
+                upVector = Vector3.Cross(tangent, Vector3.right);
+            }
+            else
+            {
+                upVector = Vector3.Cross(tangent, Vector3.forward);
+            }
+
+            int nSamples = (int)(length / samplesDistance);
+
+            _orientationVectors = new Vector3[nSamples + 1];
+            _orientationVectors[0] = upVector;
+
+            for (int i = 1; i < nSamples; i++)
+            {
+
+            }
         }
 
         /// <summary>
@@ -733,10 +776,18 @@ namespace AClockworkBerry.Splines
         /// The next time that an approximate arc length reparameterizationi will be requested, the arc length samples will be regenerated.
         /// This function is called automatically whenever a change is made to the spline (point added/deleted/moved, ...)
         /// </remarks>
-        public void SetDirty()
+        public void SetDirty(bool lenghts = true, bool orientations = true)
         {
-            _curveLengths = null;
-            _tSample = null;
+            if (lenghts)
+            {
+                _curveLengths = null;
+                _tSample = null;
+            }
+
+            if (orientations)
+            {
+                _orientationVectors = null;
+            }
         }
 
         /// <summary>

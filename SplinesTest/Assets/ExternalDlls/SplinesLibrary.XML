@@ -382,7 +382,7 @@
             </summary>
             <param name="pointIndex">Index of the point to delete.</param>
         </member>
-        <member name="M:AClockworkBerry.Splines.Spline.SetDirty">
+        <member name="M:AClockworkBerry.Splines.Spline.SetDirty(System.Boolean,System.Boolean)">
             <summary>
             Empties the caches of curve lenghts and curve samples for arc length reparameterization.
             </summary>

@@ -217,24 +217,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 509184428}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1979575761, guid: d034ac67e6b83984ebff1f5e2b4c2f61, type: 3}
+  m_Script: {fileID: 1979575761, guid: 54e80e6055f0d624188f3456f75419a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _points:
-  - {x: -.717653275, y: 0, z: 1.42439532}
-  - {x: -2.07045507, y: 0, z: -.307366133}
-  - {x: -.330501854, y: 0, z: -1.91933215}
-  - {x: .774162769, y: 0, z: -1.92712343}
-  - {x: 1.87882733, y: 0, z: -1.93491471}
-  - {x: 3.526124, y: 0, z: -1.81130505}
-  - {x: 4.77349281, y: 0, z: .757246852}
-  _modes: 020000000200000002000000
+  - {x: -.93230176, y: 2, z: 2.06038427}
+  - {x: .581604898, y: 2, z: 3.51014495}
+  - {x: 3.96615076, y: 2, z: 3.34858561}
+  - {x: 3.71820593, y: 2, z: 2.1408968}
+  - {x: 3.51709533, y: 2, z: 1.16132832}
+  - {x: 7.36710644, y: 2, z: -.997432113}
+  - {x: 5.32897043, y: 2, z: -1.16011512}
+  - {x: 3.26902318, y: 2, z: -1.32453907}
+  - {x: 1.74709415, y: 2, z: -3.10552216}
+  - {x: .358718872, y: 2, z: -2.09560394}
+  - {x: -.449964285, y: 2, z: -1.50735974}
+  - {x: -2.44620848, y: 2, z: .610623598}
+  - {x: -.93230176, y: 2, z: 2.06038427}
+  _modes: 0200000001000000010000000100000002000000
   showGizmo: 1
   showVelocities: 0
   showAccelerations: 0
-  showNumbers: 1
-  color: {r: .845588207, g: .161656573, b: .161656573, a: 1}
-  _loop: 0
+  showNumbers: 0
+  color: {r: 1, g: 1, b: 1, a: 1}
+  _loop: 1
 --- !u!4 &509184430
 Transform:
   m_ObjectHideFlags: 0
@@ -533,7 +539,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1751121640}
   m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
-  m_LocalPosition: {x: 8.60000038, y: -16, z: .649999976}
+  m_LocalPosition: {x: 2.20000005, y: 11.3999996, z: .699999988}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
