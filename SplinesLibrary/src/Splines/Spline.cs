@@ -1179,6 +1179,7 @@ namespace AClockworkBerry.Splines
             return result;
         }
 
+        /*
         public Vector3[] GetSubdivisionB(float s0, float s1)
         {
             Vector3[] result = new Vector3[4];
@@ -1211,5 +1212,6 @@ namespace AClockworkBerry.Splines
 
             return result;
         }
+         * */
     }
 }
